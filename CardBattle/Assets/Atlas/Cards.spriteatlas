@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Cards
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 180add357608aaa49a4fc581dd875e4b, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3a8f6d509fe004b4c8a4d134b13b7964, type: 3}
+  - {fileID: 21300000, guid: d0cde101a3a87464883a1dc248094894, type: 3}
+  - {fileID: 21300000, guid: 709b5112540ac4441bd04ea2f02c179c, type: 3}
+  - {fileID: 21300000, guid: 9caede643b941fd4a88ce9933ef5c5b8, type: 3}
+  - {fileID: 21300000, guid: b67471b5857970449a421fde29c1bae8, type: 3}
+  - {fileID: 21300000, guid: 8a6676d5529242548a53cf6a7485d484, type: 3}
+  - {fileID: 21300000, guid: 6e34a739e84d9f14ea8b3b2584a6a2c4, type: 3}
+  - {fileID: 21300000, guid: 7bc55c89f903813459984c4ba9b8d728, type: 3}
+  - {fileID: 21300000, guid: 08a1811e4812d1d429b08aae521d398f, type: 3}
+  - {fileID: 21300000, guid: 0e855fdeec5c73c44a02b9f9b96d7ea3, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Card_5
+  - Card_2
+  - Card_1
+  - Card_6
+  - Card_8
+  - Card_0
+  - Card_4
+  - Card_7
+  - Card_3
+  - Card_9
+  m_Tag: Cards
+  m_IsVariant: 0

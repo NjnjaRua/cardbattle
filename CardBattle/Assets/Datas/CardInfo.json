@@ -1,0 +1,66 @@
+{
+	"0": {
+		"attackPoint": "1",
+		"lifePoint": "1"
+	},
+	"1": {
+		"attackPoint": "5",
+		"lifePoint": "5"
+	},
+	"2": {
+		"attackPoint": "10",
+		"lifePoint": "10"
+	},
+	"3": {
+		"attackPoint": "15",
+		"lifePoint": "15"
+	},
+	"4": {
+		"attackPoint": "20",
+		"lifePoint": "20"
+	},
+	"5": {
+		"attackPoint": "25",
+		"lifePoint": "25"
+	},
+	"6": {
+		"attackPoint": "30",
+		"lifePoint": "30"
+	},
+	"7": {
+		"attackPoint": "35",
+		"lifePoint": "35"
+	},
+	"8": {
+		"attackPoint": "40",
+		"lifePoint": "40"
+	},
+	"9": {
+		"attackPoint": "45",
+		"lifePoint": "45"
+	},
+	"10": {
+		"attackPoint": "50",
+		"lifePoint": "50"
+	},
+	"11": {
+		"attackPoint": "55",
+		"lifePoint": "55"
+	},
+	"12": {
+		"attackPoint": "60",
+		"lifePoint": "60"
+	},
+	"13": {
+		"attackPoint": "65",
+		"lifePoint": "65"
+	},
+	"14": {
+		"attackPoint": "70",
+		"lifePoint": "70"
+	},
+	"15": {
+		"attackPoint": "75",
+		"lifePoint": "75"
+	}
+}
