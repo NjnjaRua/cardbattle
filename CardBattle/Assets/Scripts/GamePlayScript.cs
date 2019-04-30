@@ -26,16 +26,39 @@ public class GamePlayScript : MonoBehaviour {
     [SerializeField]
     private GameObject rootTrans;
 
+    private static GamePlayScript instance;
+    private bool isCompleteShowCard;
+    private bool isCompleteCreatePlayerCard = true;
+
+    private Dictionary<int,GameObject> dicInvisibleCards;
+
+    public bool IsCompleteShowCard
+    {
+        get { return isCompleteShowCard; }
+        set { isCompleteShowCard = value; }
+    }
+
+    public bool IsCompleteCreatePlayerCard
+    {
+        get { return isCompleteCreatePlayerCard; }
+        set { isCompleteCreatePlayerCard = value; }
+    }
+
 
     private void Awake()
     {
+        instance = this;
         OnCreateResource();
     }
 
     // Use this for initialization
     void Start () {
         StartCoroutine(OnDelayCreateNewCard());
+    }
 
+    public static GamePlayScript GetInstance()
+    {
+        return instance;
     }
 
     void OnCreateResource()
@@ -72,12 +95,16 @@ public class GamePlayScript : MonoBehaviour {
 
     private IEnumerator OnDelayCreateNewCard()
     {
+        isCompleteShowCard = false;
+        if (dicInvisibleCards == null)
+            dicInvisibleCards = new Dictionary<int, GameObject>();
         yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < ConstantManager.MAX_CARD_INITIALIZE; i++)
         {
             OnCloneAndMoveCard(cardPrefab, i);
             yield return new WaitForSeconds(0.5f);
         }
+        isCompleteShowCard = true;
     }
 	
 	private void OnCloneAndMoveCard(GameObject prefab, int index)
@@ -102,8 +129,8 @@ public class GamePlayScript : MonoBehaviour {
             Debug.LogError("Missing CardInvisibleScript");
             return;
         }
-        cardInvisible.OnUpdateCardVisible(index);
-        
+        dicInvisibleCards[index] = cardClone;
+        cardInvisible.OnUpdateCardVisible(index);        
 
         Button btnCardInvisible = cardInvisible.GetComponent<Button>();
         if (btnCardInvisible == null)
@@ -138,5 +165,105 @@ public class GamePlayScript : MonoBehaviour {
         });
         seq.Append(posTween);
         seq.Append(cardClone.transform.DOScale(new Vector3(localScale.x, localScale.y, localScale.z), 0.2f));
+    }
+
+    public void OnRoll(int index)
+    {
+        isCompleteCreatePlayerCard = false;
+        GameObject gObj = GetInvisibleCard(index);
+        Sequence seq = PlayRotation(gObj);
+        Vector3 playerCardPos = PlayerCardManager.GetInstance().GetNextPosPlayerCard();
+        seq.Append(gObj.transform.DOMove(playerCardPos, 0.5f));
+        seq.OnComplete(() =>
+        {
+            CardInVisibleScript cardInvisible = gObj.GetComponent<CardInVisibleScript>();
+            if (cardInvisible != null)
+                cardInvisible.isHide = true;
+            gObj.SetActive(false);
+            if (SoundManager.getInstance())
+                SoundManager.getInstance().PlaySound(SoundId.TOUCH);
+            if (PlayerCardManager.GetInstance() != null)
+                PlayerCardManager.GetInstance().OnCreatePlayerCard(index);
+            isCompleteCreatePlayerCard = true;
+        });
+    }
+
+    public GameObject GetInvisibleCard(int index)
+    {
+        if (index < 0 || dicInvisibleCards == null || dicInvisibleCards.Count <= 0)
+            return null;
+        GameObject gObj = null;
+        if (!dicInvisibleCards.TryGetValue(index, out gObj))
+        {
+            return null;
+        }
+        return gObj;
+    }
+
+    public void HideInvibleCard(int index)
+    {
+        GameObject gObj = GetInvisibleCard(index);
+        if(gObj != null)
+            gObj.SetActive(false);
+    }
+
+    private Sequence PlayRotation(GameObject gObj)
+    {
+        Sequence seq = DOTween.Sequence();
+        float durationRotate = 0.2f;
+
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 45f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 90f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 180f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 270f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 0, 0), durationRotate));
+        return seq;
+    }
+
+    public Dictionary<int, GameObject> GetRemainInvisibleCards()
+    {
+        if (dicInvisibleCards == null || dicInvisibleCards.Count <= 0)
+            return null;
+        Dictionary<int, GameObject> dicResult = new Dictionary<int, GameObject>();
+        foreach (KeyValuePair<int, GameObject> data in dicInvisibleCards)
+        {
+            CardInVisibleScript card = data.Value.GetComponent<CardInVisibleScript>();
+            if (!card.isHide)
+            {
+                dicResult[data.Key] = data.Value;
+            }
+        }
+        return dicResult;
+    }
+
+    public void OnCreateCompCards()
+    {
+        StartCoroutine(DelayCreateCompCards());
+    }
+
+    private IEnumerator DelayCreateCompCards()
+    {
+        yield return new WaitForSeconds(.5f);
+        Dictionary<int, GameObject> dicInvisbileCards = GetRemainInvisibleCards();
+
+        if (dicInvisbileCards != null && dicInvisbileCards.Count > 0)
+        {
+            foreach (KeyValuePair<int, GameObject> data in dicInvisbileCards)
+            {
+                GameObject gObj = data.Value;
+                Sequence seq = PlayRotation(gObj);
+                Vector3 compCard = ComputerCardManager.GetInstance().GetPosCompCard();
+                seq.Append(gObj.transform.DOMove(compCard, 0.5f));
+                seq.OnComplete(() =>
+                {
+                    gObj.SetActive(false);
+                    if (SoundManager.getInstance())
+                        SoundManager.getInstance().PlaySound(SoundId.FLY);
+                    if (ComputerCardManager.GetInstance() != null)
+                        ComputerCardManager.GetInstance().OnCreateComCard(data.Key);
+                });
+                yield return new WaitForSeconds(2f);
+            }
+        }
     }
 }

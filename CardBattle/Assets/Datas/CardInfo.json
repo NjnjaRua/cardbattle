@@ -1,66 +1,66 @@
 {
 	"0": {
-		"attackPoint": "1",
-		"lifePoint": "1"
+		"attackPoint": "4",
+		"lifePoint": "6"
 	},
 	"1": {
-		"attackPoint": "5",
+		"attackPoint": "8",
 		"lifePoint": "5"
 	},
 	"2": {
-		"attackPoint": "10",
-		"lifePoint": "10"
+		"attackPoint": "67",
+		"lifePoint": "19"
 	},
 	"3": {
-		"attackPoint": "15",
-		"lifePoint": "15"
-	},
-	"4": {
-		"attackPoint": "20",
-		"lifePoint": "20"
-	},
-	"5": {
-		"attackPoint": "25",
-		"lifePoint": "25"
-	},
-	"6": {
-		"attackPoint": "30",
-		"lifePoint": "30"
-	},
-	"7": {
-		"attackPoint": "35",
-		"lifePoint": "35"
-	},
-	"8": {
-		"attackPoint": "40",
-		"lifePoint": "40"
-	},
-	"9": {
-		"attackPoint": "45",
-		"lifePoint": "45"
-	},
-	"10": {
-		"attackPoint": "50",
+		"attackPoint": "43",
 		"lifePoint": "50"
 	},
+	"4": {
+		"attackPoint": "45",
+		"lifePoint": "61"
+	},
+	"5": {
+		"attackPoint": "68",
+		"lifePoint": "41"
+	},
+	"6": {
+		"attackPoint": "82",
+		"lifePoint": "21"
+	},
+	"7": {
+		"attackPoint": "62",
+		"lifePoint": "71"
+	},
+	"8": {
+		"attackPoint": "24",
+		"lifePoint": "17"
+	},
+	"9": {
+		"attackPoint": "37",
+		"lifePoint": "27"
+	},
+	"10": {
+		"attackPoint": "45",
+		"lifePoint": "35"
+	},
 	"11": {
-		"attackPoint": "55",
-		"lifePoint": "55"
+		"attackPoint": "74",
+		"lifePoint": "32"
 	},
 	"12": {
-		"attackPoint": "60",
-		"lifePoint": "60"
+		"attackPoint": "64",
+		"lifePoint": "13"
 	},
 	"13": {
-		"attackPoint": "65",
-		"lifePoint": "65"
+		"attackPoint": "53",
+		"lifePoint": "54"
 	},
 	"14": {
-		"attackPoint": "70",
-		"lifePoint": "70"
+		"attackPoint": "99",
+		"lifePoint": "66"
 	},
 	"15": {
-		"attackPoint": "75",
-		"lifePoint": "75"
+		"attackPoint": "34",
+		"lifePoint": "52"
 	}
 }

@@ -16,6 +16,11 @@ public struct TextRes
 public class ConstantManager : MonoBehaviour
 {
 	public const string CARD_INFO = "CARD_INFO";
+    public const string EVENT_CRATE_COMPUTER_CARD = "EVENT_CRATE_COMPUTER_CARD";
+
+
+    public const string HINT_PLAYER_CARD_FULL = "Player Cards are full";
+    public const string HINT_WAITING_FOR_COMPLETING_CARD = "Waiting for completing card";
 
     static private Dictionary<string, JSONNode> constantsCardInfoDef = null;
 

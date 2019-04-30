@@ -1,22 +1,36 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CardInVisibleScript : MonoBehaviour {
     private int cardIndex;
+    public bool isHide;
 
     public void OnUpdateCardVisible(int _cardIndex)
     {
         if (_cardIndex < 0)
             return;
+        isHide = false;
         this.cardIndex = _cardIndex;
     }
 
 	public void OnChooseCard()
-    {
-        if (SoundManager.getInstance())
-            SoundManager.getInstance().PlaySound(SoundId.TOUCH);
-        if(PlayerCardManager.GetInstance() != null)
-            PlayerCardManager.GetInstance().OnCreatePlayerCard(cardIndex);
+    {        
+        GamePlayScript gamePlayScript = GamePlayScript.GetInstance();
+        GameController gController = GameController.GetInstance();
+        if (gamePlayScript != null && !gamePlayScript.IsCompleteShowCard || !gamePlayScript.IsCompleteCreatePlayerCard)
+        {
+            if (gController != null)
+                gController.ShowHint(ConstantManager.HINT_WAITING_FOR_COMPLETING_CARD);
+            return;
+        }
+        if (PlayerCardManager.GetInstance() != null && PlayerCardManager.GetInstance().IsFullSlot())
+        {
+            if (gController != null)
+                gController.ShowHint(ConstantManager.HINT_PLAYER_CARD_FULL);
+            return;
+        }
+        gamePlayScript.OnRoll(cardIndex);
     }
 }

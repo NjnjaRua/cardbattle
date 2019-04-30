@@ -24,15 +24,22 @@ public class CardDisplay : MonoBehaviour {
     private Text txtLifePoint;
 
 
-    public void OnUpdateCard(Card card)
+    public void OnUpdateCard(Card card, int cardIndex)
     {
-        if (card == null)
+        if (cardIndex < 0 || card == null)
             return;
         txtName.text = card.name;
         txtDescription.text = card.description;
         image.sprite = card.image;
-        txtAttackPoint.text = Util.NumberFormat(card.attackPoint);
-        txtLifePoint.text = Util.NumberFormat(card.lifePoint);
+
+        //get attackPoint from Card SCripttable Object
+        /*txtAttackPoint.text = Util.NumberFormat(card.attackPoint);
+        txtLifePoint.text = Util.NumberFormat(card.lifePoint);*/
+
+        //get data from Jason
+        txtAttackPoint.text = Util.NumberFormat(ConstantManager.GetAttackPoint(cardIndex));
+        txtLifePoint.text = Util.NumberFormat(ConstantManager.GetLifePoint(cardIndex));
+
 
         SpriteAtlasScript spriteAtlas = background.GetComponent<SpriteAtlasScript>();
         if(spriteAtlas != null)

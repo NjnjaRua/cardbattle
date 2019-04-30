@@ -65,13 +65,11 @@ public class ResourcesManager : MonoBehaviour {
             return null;
         int random = keys[Random.Range(0, keys.Count)];
         Card card = null;
-        Card tempCard = null;
         if(!availableCards.TryGetValue(random, out card))
         {
             return null;
         }
         choosedCards[random] = card;
-        //tempCard = card;
         availableCards.Remove(random);
         return card;
     }

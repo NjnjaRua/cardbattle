@@ -1,4 +1,7 @@
 ﻿using System.Security.Cryptography;
+using UnityEngine;
+using UnityEngine.UI;
+
 public static class Util
 {
 	public static bool QuickCompare(byte[] b1, byte[] b2)
@@ -27,5 +30,21 @@ public static class Util
     public static string NumberFormat(long number)
     {
         return number.ToString("N0");
+    }
+
+    public static float calculateTextWidth(string message, Text txt)
+    {
+        Canvas.ForceUpdateCanvases();
+        return txt.preferredWidth;
+    }
+
+    public static Vector3 GetPostConvert(Vector3 position)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(position);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100))
+            Debug.DrawLine(ray.origin, hit.point);
+        return hit.point;
     }
 }
