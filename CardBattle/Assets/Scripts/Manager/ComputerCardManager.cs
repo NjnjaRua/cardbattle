@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ComputerCardManager : MonoBehaviour {
     private static ComputerCardManager instance;
     [SerializeField]
-    private List<GameObject> listCards;
-    private Dictionary<int, Card> dicCards;
-
+    private List<CardDisplay> listCards;
     private int currentSlot;
+    private Dictionary<int, Card> dicCards;
 
     private void Awake()
     {
@@ -43,14 +44,11 @@ public class ComputerCardManager : MonoBehaviour {
         if (cardIndex < 0 || listCards == null || listCards.Count <= 0)
             return;
         if (IsFullSlot())
-        {
-            EventManager.TriggerEvent(ConstantManager.EVENT_CRATE_COMPUTER_CARD);
             return;
-        }
         if (dicCards == null)
             dicCards = new Dictionary<int, Card>();
         currentSlot += 1;
-        GameObject cardDisplay = null;
+        CardDisplay cardDisplay = null;
         int index = -1;
         for (int i = 0, len = listCards.Count; i < len; i++)
         {
@@ -63,13 +61,14 @@ public class ComputerCardManager : MonoBehaviour {
         }
         if (cardDisplay != null)
         {
-            cardDisplay.SetActive(true);
-            Card card = ResourcesManager.GetInstance().GetCardRandomly();
-            if (card != null)
-            {
-                dicCards[currentSlot] = card;
-            }
+            cardDisplay.gameObject.SetActive(true);
+            Card card = ResourcesManager.GetInstance().GetAvailableCard();
+            Debug.Log("<color=green>card </color>" + card.name + " ; " + card.attackPoint + " ; " + card.lifePoint);
+            cardDisplay.OnUpdateCard(true, card, cardIndex);
+            dicCards[currentSlot] = card;
         }
+        if (IsFullSlot())
+            OnShowFirstCard();
     }
 
     public bool IsFullSlot()
@@ -81,18 +80,20 @@ public class ComputerCardManager : MonoBehaviour {
     {
         if (index < 0 || index >= ConstantManager.MAX_FIGHTING_CARD || listCards == null || listCards.Count <= 0)
             return null;
+        CardDisplay cardDisplay = null;
         GameObject gObj = null;
         for (int i = 0, len = listCards.Count; i < len; i++)
         {
-            gObj = listCards[i];
-            if (gObj == null)
+            cardDisplay = listCards[i];
+            if (cardDisplay == null)
                 continue;
             if (i == index)
             {
-                return gObj;
+                gObj = cardDisplay.gameObject;
+                break;
             }
         }
-        return null;
+        return gObj;
     }
 
     public Vector3 GetPosCompCard()
@@ -113,5 +114,53 @@ public class ComputerCardManager : MonoBehaviour {
             return Vector3.zero;
         }
         return gObj.transform.position;
+    }
+
+    private CardDisplay GetFirstEnalbeCard()
+    {
+        if (listCards == null || listCards.Count <= 0)
+            return null;
+        CardDisplay cardDisplay = null;
+        for(int i = 0, len = listCards.Count;i < len;i++)
+        {
+            cardDisplay = listCards[i];
+            if (cardDisplay == null || !cardDisplay.gameObject.activeSelf)
+                continue;
+            return cardDisplay;
+        }
+        return null;
+    }
+
+    private void OnShowFirstCard()
+    {
+        Debug.Log("<color=blue>OnShowFirstCard</color>");
+        if (dicCards == null || dicCards.Count <= 0)
+            return;
+        CardDisplay firstCard = GetFirstEnalbeCard();
+        if (firstCard == null)
+            return;
+        Sequence seq = Util.PlayRotation(firstCard.gameObject, 0.15f);
+        seq.OnComplete(() =>
+        {
+            Debug.Log("ROTATION OK");
+            firstCard.OnShowBackSide(false);
+            EventManager.TriggerEvent(ConstantManager.EVENT_ENALBE_BATTLE);
+            Sequence seqMove = DOTween.Sequence();
+            CardDisplay cardDisplay = Battle.GetInstance().GetComputerCard();
+            seqMove.Append(firstCard.gameObject.transform.DOMove(cardDisplay.transform.position, 2f));
+            seqMove.OnComplete(() =>
+            {
+                firstCard.gameObject.SetActive(false);
+                if (SoundManager.getInstance())
+                    SoundManager.getInstance().PlaySound(SoundId.FLY);
+                List<int> keys = dicCards.Keys.ToList();
+                if(keys != null)
+                {
+                    int firstkey = keys[0];
+                    cardDisplay.OnUpdateCard(false, dicCards[firstkey], firstkey);
+                }
+                
+            });
+        });
     }
 }

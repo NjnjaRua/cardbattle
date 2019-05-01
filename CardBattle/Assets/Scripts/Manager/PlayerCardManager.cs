@@ -93,12 +93,12 @@ public class PlayerCardManager : MonoBehaviour
             Card card = ResourcesManager.GetInstance().GetCardRandomly();
             if(card != null)
             {
-                cardDisplay.OnUpdateCard(card, cardIndex);
+                cardDisplay.OnUpdateCard(false, card, cardIndex);
                 dicCards[currentSlot] = card;
             }
         }
-        if (IsFullSlot())        {
-            EventManager.TriggerEvent(ConstantManager.EVENT_CRATE_COMPUTER_CARD);        }
+        if (IsFullSlot())
+            EventManager.TriggerEvent(ConstantManager.EVENT_CRATE_COMPUTER_CARD);
     }
 
     public Dictionary<int,Card> GetPlayerCards()

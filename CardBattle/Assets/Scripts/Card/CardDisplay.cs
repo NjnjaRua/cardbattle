@@ -4,7 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CardDisplay : MonoBehaviour {
-    
+
+    public bool isBackSide;
+
+    [SerializeField]
+    private GameObject gBackSide;
+
+    [SerializeField]
+    private GameObject gFrontSide;
+
     [SerializeField]
     private Text txtName;
 
@@ -24,10 +32,12 @@ public class CardDisplay : MonoBehaviour {
     private Text txtLifePoint;
 
 
-    public void OnUpdateCard(Card card, int cardIndex)
+    public void OnUpdateCard(bool backSide, Card card, int cardIndex)
     {
         if (cardIndex < 0 || card == null)
             return;
+        isBackSide = backSide;
+        OnShowBackSide(backSide);
         txtName.text = card.name;
         txtDescription.text = card.description;
         image.sprite = card.image;
@@ -42,7 +52,13 @@ public class CardDisplay : MonoBehaviour {
 
 
         SpriteAtlasScript spriteAtlas = background.GetComponent<SpriteAtlasScript>();
-        if(spriteAtlas != null)
+        if (spriteAtlas != null)
             spriteAtlas.OnChangeSprite();
+    }
+
+    public void OnShowBackSide(bool backSide)
+    {
+        gBackSide.SetActive(backSide);
+        gFrontSide.SetActive(!backSide);
     }
 }

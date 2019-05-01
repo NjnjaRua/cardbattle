@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ResourcesManager : MonoBehaviour {
@@ -72,5 +73,22 @@ public class ResourcesManager : MonoBehaviour {
         choosedCards[random] = card;
         availableCards.Remove(random);
         return card;
+    }
+
+    public Card GetAvailableCard()
+    {
+        if (availableCards == null || availableCards.Count <= 0)
+            return null;
+        List<int> keys = availableCards.Keys.ToList();
+        if (keys == null || keys.Count <= 0)
+            return null;
+        int firstKey = keys[0];
+        Card firstCard = null;
+        if (!availableCards.TryGetValue(firstKey, out firstCard))
+        {
+            return null;
+        }
+        availableCards.Remove(firstKey);
+        return firstCard;
     }
 }

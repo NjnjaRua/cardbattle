@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,5 +61,18 @@ public static class Util
         if (Physics.Raycast(ray, out hit, 100))
             Debug.DrawLine(ray.origin, hit.point);
         return hit.point;
+    }
+
+
+    public static Sequence PlayRotation(GameObject gObj, float durationRotate)
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 45f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 90f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 180f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 270f, 0), durationRotate));
+        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 0, 0), durationRotate));
+        return seq;
     }
 }

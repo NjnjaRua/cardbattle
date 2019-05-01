@@ -172,7 +172,7 @@ public class GamePlayScript : MonoBehaviour {
     {
         isCompleteCreatePlayerCard = false;
         GameObject gObj = GetInvisibleCard(index);
-        Sequence seq = PlayRotation(gObj, 0.2f);
+        Sequence seq = Util.PlayRotation(gObj, 0.2f);
         Vector3 playerCardPos = PlayerCardManager.GetInstance().GetNextPosPlayerCard();
         seq.Append(gObj.transform.DOMove(playerCardPos, 0.2f));
         seq.OnComplete(() =>
@@ -206,18 +206,6 @@ public class GamePlayScript : MonoBehaviour {
         GameObject gObj = GetInvisibleCard(index);
         if(gObj != null)
             gObj.SetActive(false);
-    }
-
-    private Sequence PlayRotation(GameObject gObj, float durationRotate)
-    {
-        Sequence seq = DOTween.Sequence();
-
-        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 45f, 0), durationRotate));
-        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 90f, 0), durationRotate));
-        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 180f, 0), durationRotate));
-        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 270f, 0), durationRotate));
-        seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 0, 0), durationRotate));
-        return seq;
     }
 
     public Dictionary<int, GameObject> GetRemainInvisibleCards()
@@ -257,7 +245,7 @@ public class GamePlayScript : MonoBehaviour {
                 {
                     continue;
                 }
-                Sequence seq = PlayRotation(gObj, 0.1f);
+                Sequence seq = Util.PlayRotation(gObj, 0.1f);
                 Vector3 compCard = ComputerCardManager.GetInstance().GetPosCompCard();
                 seq.Append(gObj.transform.DOMove(compCard, 0.3f));
                 seq.OnComplete(() =>
