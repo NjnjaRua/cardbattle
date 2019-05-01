@@ -22,13 +22,11 @@ public class CardInVisibleScript : MonoBehaviour {
         if (gamePlayScript != null && !gamePlayScript.IsCompleteShowCard || !gamePlayScript.IsCompleteCreatePlayerCard)
         {
             if (gController != null)
-                gController.ShowHint(ConstantManager.HINT_WAITING_FOR_COMPLETING_CARD);
+                gController.ShowHint(ConstantManager.HINT_WAITING_FOR_COMPLETING_CARD, this.GetComponent<RectTransform>());
             return;
         }
         if (PlayerCardManager.GetInstance() != null && PlayerCardManager.GetInstance().IsFullSlot())
         {
-            if (gController != null)
-                gController.ShowHint(ConstantManager.HINT_PLAYER_CARD_FULL);
             return;
         }
         gamePlayScript.OnRoll(cardIndex);

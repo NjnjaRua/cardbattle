@@ -1,7 +1,21 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class CardCompare : IComparer<int>
+{
+    public bool reverse = false;
+    public int Compare(int x, int y)
+    {
+        int result = 0;
+        if (x < y) result = 1;
+        else if (x > y) result = -1;
+        if (reverse)
+            result *= -1;
+        return result;
+    }
+}
 public static class Util
 {
 	public static bool QuickCompare(byte[] b1, byte[] b2)

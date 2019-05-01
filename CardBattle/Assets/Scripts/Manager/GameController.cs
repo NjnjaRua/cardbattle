@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour {
             Text text = hintText.gameObject.GetComponent<Text>();
             text.text = txt;
             hintText.gameObject.SetActive(true);
-            float w = Screen.width * 0.7f;
+            float w = Util.calculateTextWidth(text.text, text);
             if (w >= Screen.width * 0.7f)
                 w = Screen.width * 0.7f;
             Vector3 size = hintTransform.sizeDelta;
@@ -43,10 +43,9 @@ public class GameController : MonoBehaviour {
                 pos = rectTrans.transform.position;
             else
                 pos = Util.GetPostConvert(Input.mousePosition);
-            pos.z = 0;
             hintTransform.position = pos;
             pos.y += DELTA;
-            Tweener t = hintTransform.DOLocalMove(pos, time);
+            Tweener t = hintTransform.DOMoveY(pos.y, time);
             t.OnComplete(() =>
             {
                 hintText.gameObject.SetActive(false);

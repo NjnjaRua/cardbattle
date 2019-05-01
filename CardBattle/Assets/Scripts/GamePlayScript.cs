@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -171,9 +172,9 @@ public class GamePlayScript : MonoBehaviour {
     {
         isCompleteCreatePlayerCard = false;
         GameObject gObj = GetInvisibleCard(index);
-        Sequence seq = PlayRotation(gObj);
+        Sequence seq = PlayRotation(gObj, 0.2f);
         Vector3 playerCardPos = PlayerCardManager.GetInstance().GetNextPosPlayerCard();
-        seq.Append(gObj.transform.DOMove(playerCardPos, 0.5f));
+        seq.Append(gObj.transform.DOMove(playerCardPos, 0.2f));
         seq.OnComplete(() =>
         {
             CardInVisibleScript cardInvisible = gObj.GetComponent<CardInVisibleScript>();
@@ -207,10 +208,9 @@ public class GamePlayScript : MonoBehaviour {
             gObj.SetActive(false);
     }
 
-    private Sequence PlayRotation(GameObject gObj)
+    private Sequence PlayRotation(GameObject gObj, float durationRotate)
     {
         Sequence seq = DOTween.Sequence();
-        float durationRotate = 0.2f;
 
         seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 45f, 0), durationRotate));
         seq.Append(gObj.transform.DOLocalRotate(new Vector3(0, 90f, 0), durationRotate));
@@ -243,26 +243,32 @@ public class GamePlayScript : MonoBehaviour {
 
     private IEnumerator DelayCreateCompCards()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(0.1f);
         Dictionary<int, GameObject> dicInvisbileCards = GetRemainInvisibleCards();
-
         if (dicInvisbileCards != null && dicInvisbileCards.Count > 0)
         {
-            foreach (KeyValuePair<int, GameObject> data in dicInvisbileCards)
+            CardCompare cardCompare = new CardCompare();
+            List<int> keys = dicInvisbileCards.Keys.ToList();
+            keys.Sort(cardCompare);
+            foreach(int key in keys)
             {
-                GameObject gObj = data.Value;
-                Sequence seq = PlayRotation(gObj);
+                GameObject gObj = null;
+                if(!dicInvisbileCards.TryGetValue(key, out gObj))
+                {
+                    continue;
+                }
+                Sequence seq = PlayRotation(gObj, 0.1f);
                 Vector3 compCard = ComputerCardManager.GetInstance().GetPosCompCard();
-                seq.Append(gObj.transform.DOMove(compCard, 0.5f));
+                seq.Append(gObj.transform.DOMove(compCard, 0.3f));
                 seq.OnComplete(() =>
                 {
                     gObj.SetActive(false);
                     if (SoundManager.getInstance())
                         SoundManager.getInstance().PlaySound(SoundId.FLY);
                     if (ComputerCardManager.GetInstance() != null)
-                        ComputerCardManager.GetInstance().OnCreateComCard(data.Key);
+                        ComputerCardManager.GetInstance().OnCreateComCard(key);
                 });
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }

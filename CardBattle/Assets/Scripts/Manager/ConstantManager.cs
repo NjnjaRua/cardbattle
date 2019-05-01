@@ -20,7 +20,7 @@ public class ConstantManager : MonoBehaviour
 
 
     public const string HINT_PLAYER_CARD_FULL = "Player Cards are full";
-    public const string HINT_WAITING_FOR_COMPLETING_CARD = "Waiting for completing card";
+    public const string HINT_WAITING_FOR_COMPLETING_CARD = "Player Cards are being created";
 
     static private Dictionary<string, JSONNode> constantsCardInfoDef = null;
 
