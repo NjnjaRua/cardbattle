@@ -16,7 +16,7 @@ public class CardInVisibleScript : MonoBehaviour {
     }
 
 	public void OnChooseCard()
-    {        
+    {
         GamePlayScript gamePlayScript = GamePlayScript.GetInstance();
         GameController gController = GameController.GetInstance();
         if (gamePlayScript != null && !gamePlayScript.IsCompleteShowCard || !gamePlayScript.IsCompleteCreatePlayerCard)

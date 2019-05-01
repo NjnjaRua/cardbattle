@@ -172,7 +172,7 @@ public class LoadingScript : MonoBehaviour {
 		is_loading = false;
 		isInit = false;
         if (SoundManager.getInstance())
-            SoundManager.getInstance().StopSound();;
+            SoundManager.getInstance().StopSound();
         if (MainController.GetInstance() != null)
             MainController.GetInstance().SwitchScene(MainController.SCENE_MAIN_GAME);
     }
